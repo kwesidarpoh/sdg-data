@@ -1,30 +1,28 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 env:
-  - SDG_REF="master" API_VERSION=""
-  - SDG_REF="develop" API_VERSION="dev"
-#  - SDG_REF="hotfix/25" API_VERSION="test"
+- SDG_REF="master" API_VERSION=""
+- SDG_REF="develop" API_VERSION="dev"
 matrix:
   allow_failures:
-    - env: SDG_REF="develop"
+  - env: SDG_REF="develop"
 sudo: false
 git:
   depth: false
-
 branches:
   only:
   - master
   - develop
 install:
-  - pip install -r scripts/requirements.txt
-  - pip install git+git://github.com/ONSdigital/sdg-build@${SDG_REF}
+- pip install -r scripts/requirements.txt
+- pip install git+git://github.com/ONSdigital/sdg-build@${SDG_REF}
 before_script:
-  - chmod +x ./scripts/*.py
-  - chmod +x ./scripts/deploy/*.sh
+- chmod +x ./scripts/*.py
+- chmod +x ./scripts/deploy/*.sh
 script:
-  - python ./scripts/check_data.py
-  - python ./scripts/build_data.py
+- python ./scripts/check_data.py
+- python ./scripts/build_data.py
 deploy:
 - provider: script
   script: scripts/deploy/deploy_staging.sh
@@ -36,3 +34,6 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
+before_install:
+- openssl aes-256-cbc -K $encrypted_5c847b464f79_key -iv $encrypted_5c847b464f79_iv
+  -in keys.tar.enc -out keys.tar -d
